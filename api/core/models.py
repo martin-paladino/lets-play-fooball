@@ -20,7 +20,7 @@ class Player(models.Model):
 
     name = models.CharField(max_length=100)
     picture = models.ImageField(upload_to='players/', blank=True, null=True)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, blank=True, null=True, related_name='players')
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, blank=True, null=True, related_name='players')
     shirt_number = models.IntegerField(blank=False, null=False)
     position = models.CharField(max_length=50, blank=False, null=False)
     height = models.IntegerField(blank=False, null=False)
