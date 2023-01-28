@@ -1,4 +1,8 @@
 /venv
+
+# this avoids uploading media files to github
+/api/media
+
 *.pyc
 *.sqlite3
 *.env
