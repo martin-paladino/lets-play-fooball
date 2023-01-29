@@ -10,6 +10,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
+    team = TeamSerializer()
     class Meta:
         model = models.Player
         fields = '__all__'
