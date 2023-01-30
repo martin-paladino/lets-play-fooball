@@ -1,5 +1,5 @@
 export type Team = {
-    id: number;
+    id?: number;
     name: string;
     team_shield: string;
     number_of_players?: number;
@@ -8,7 +8,7 @@ export type Team = {
 }
 
 export type Player = {
-    id: number;
+    id?: number;
     name: string;
     picture?: string;
     team?: Team;
@@ -18,5 +18,17 @@ export type Player = {
     weight: number;
     birth_date: string;
     age: number;
+    foot: string;
+}
+
+export type PlayerPayload = {
+    name: string;
+    picture?: string;
+    team_id?: number;
+    shirt_number: number;
+    position: string;
+    height: number;
+    weight: number;
+    birth_date: string;
     foot: string;
 }

@@ -31,7 +31,7 @@ const PlayerDetails: React.FC = () => {
             const response = await fetch(`http://localhost:8000/api/players/${id}/`);
             try {
                 const data = await response.json();
-                console.log("data", data)
+                localStorage.setItem("player", JSON.stringify(data));
                 setPlayer(data);
             } catch (error) {
                 console.log(error);

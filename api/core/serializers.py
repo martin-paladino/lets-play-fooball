@@ -10,8 +10,11 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
-    team = TeamSerializer()
+    position = serializers.CharField(required=False)
+    team_id = serializers.IntegerField(write_only=True, required=False)
+    team = TeamSerializer(read_only=True)
+    picture = serializers.ImageField(required=False)
     class Meta:
         model = models.Player
         fields = '__all__'
-        read_only_fields = ('age',)
+        read_only_fields = ('age', 'team', 'id')

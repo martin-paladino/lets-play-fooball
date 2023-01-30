@@ -9,6 +9,7 @@ import Teams from './pages/Teams';
 import Players from './pages/Players';
 import TeamDetail from './pages/Teams/team-detail';
 import PlayerDetail from './pages/Players/player-detail';
+import AddEditPlayer from './pages/Players/add-edit-player';
 
 const App: React.FC = () => {
   return (
@@ -17,8 +18,9 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/equipos" element={<Teams />} />
         <Route path="/jugadores" element={<Players />} />
-        <Route path="/equipos/:id" element={<TeamDetail />}/>
+        <Route path="/jugadores/nuevo" element={<AddEditPlayer />} />
         <Route path="/jugadores/:id" element={<PlayerDetail />} />
+        <Route path="/equipos/:id" element={<TeamDetail />}/>
       </Routes>
       </>
   );
