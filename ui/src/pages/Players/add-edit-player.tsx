@@ -25,7 +25,7 @@ const AddEditPlayer: React.FC = () => {
 
     return (
         <>
-            <Typography variant="h4">Agregar/Editar Jugador</Typography>
+            <Typography variant="h4">{player ? "Editar" : "Agregar"} Jugador</Typography>
             <PlayerForm teams={teams} player={player} />
         </>
     );

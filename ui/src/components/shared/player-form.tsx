@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from '@mui/styles';
 import { TextField, Button, FormControl, Select, InputLabel, MenuItem, Theme } from "@mui/material"
 import { Player, PlayerPayload, Team } from "../../types";
 import { SelectChangeEvent } from "@mui/material/Select";
+import { useLocation } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -29,8 +30,15 @@ type Props = {
 
 export default function PlayerForm({ player, teams }: Props) {
     const [playerForm, setPlayerForm] = useState<any>();
-
+    const location = useLocation();
     const classes = useStyles();
+
+    useEffect(() => {
+        //if url includes "nuevo" the stored player is removed so the form is empty
+        //otherwise the stored player recieved as prop is used to fill the form 
+        if(location.pathname.includes("nuevo")) localStorage.removeItem("player");
+        else setPlayerForm(player);
+    }, [player]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPlayerForm({  ...playerForm, [event.target.name]: event.target.value });
@@ -47,11 +55,18 @@ export default function PlayerForm({ player, teams }: Props) {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        //if editing and picture is a string it means it was not changed so it is deleted from the form
+        //if it was changed playerForm.picture should be a file
+        if(player && typeof playerForm.picture === "string") delete playerForm.picture;
+        //if editing and there is teamForm.name it means it was not changed so it is deleted from the form
+        //if it was changed playerForm.team should be a number
+        if(player && playerForm.team.name) delete playerForm.team;
         const formData: any = new FormData();
         for (let key in playerForm) formData.append(key, playerForm[key]);
 
-        const response = await fetch("http://localhost:8000/api/players/", {
-            method: "POST",
+        const response = await fetch(player ? `http://localhost:8000/api/players/${player.id}/` : 
+            "http://localhost:8000/api/players/", {
+            method: player ? "PUT" : "POST",
             body: formData,
         });
         try {

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Typography, Card, CardContent, CardMedia, Theme } from '@mui/material';
+import { Typography, Card, CardContent, CardMedia, Theme, Button } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { useParams } from 'react-router-dom';
 import { Player } from '../../types';
 
 const useStyles: any = makeStyles((theme: Theme) => ({
@@ -76,6 +76,9 @@ const PlayerDetails: React.FC = () => {
                     <Typography variant="subtitle2" color="textSecondary">
                         Pie hábil: {player?.foot}
                     </Typography>
+                    <Link to={`/jugadores/${id}/editar`} style={{ textDecoration: "none" }}>
+                    <Button>Editar</Button>
+                    </Link>
                 </CardContent>
             </div>
         </Card>

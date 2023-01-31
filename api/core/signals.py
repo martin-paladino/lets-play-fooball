@@ -8,7 +8,8 @@ def update_team_info(sender, instance, **kwargs):
     team = instance.team
     if team:
         players = team.players.all()
-        team.average_age = sum([p.age for p in players]) / players.count()
+        team.average_age = sum([p.age for p in players]) \
+            / players.count() if players.count() > 0 else 0
         team.number_of_players = players.count()
         team.save()
 
