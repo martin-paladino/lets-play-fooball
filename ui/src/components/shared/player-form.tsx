@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from '@mui/styles';
-import { TextField, Button, FormControl, Select, InputLabel, MenuItem, Theme } from "@mui/material"
+import { TextField, Button, MenuItem, Theme } from "@mui/material"
 import { Player, PlayerPayload, Team } from "../../types";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -30,6 +30,8 @@ type Props = {
 
 export default function PlayerForm({ player, teams }: Props) {
     const [playerForm, setPlayerForm] = useState<any>();
+    const [selectedFoot, setSelectedFoot] = useState("");
+    const navigate = useNavigate();
     const location = useLocation();
     const classes = useStyles();
 
@@ -38,15 +40,22 @@ export default function PlayerForm({ player, teams }: Props) {
         //otherwise the stored player recieved as prop is used to fill the form 
         if(location.pathname.includes("nuevo")) localStorage.removeItem("player");
         else setPlayerForm(player);
+
+        if (player) setSelectedFoot(player.foot);
     }, [player]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPlayerForm({  ...playerForm, [event.target.name]: event.target.value });
+        setPlayerForm({ ...playerForm, [event.target.name]: event.target.value });
     };
 
-    const handleSelect = (event: SelectChangeEvent) => {
+    const handleTeamSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedTeam = teams.find(team => team.id === parseInt(event.target.value));
         setPlayerForm({ ...playerForm, team_id: selectedTeam?.id ? selectedTeam.id : null });
+    };
+
+    const handleFootSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedFoot(event.target.value);
+        setPlayerForm({ ...playerForm, foot: event.target.value });
     };
 
     const handlePicture = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,23 +63,35 @@ export default function PlayerForm({ player, teams }: Props) {
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        const formData = new FormData();
         event.preventDefault();
+        setPlayerForm({
+            name: "",
+            team: "",
+            shirt_number: "",
+            position: "",
+            picture: "",
+            height: "",
+            weight: "",
+            birth_date: "",
+            foot: "",
+        });
         //if editing and picture is a string it means it was not changed so it is deleted from the form
         //if it was changed playerForm.picture should be a file
-        if(player && typeof playerForm.picture === "string") delete playerForm.picture;
+        if(player && (playerForm.picture === null || typeof playerForm.picture === "string")) delete playerForm.picture;
         //if editing and there is teamForm.name it means it was not changed so it is deleted from the form
         //if it was changed playerForm.team should be a number
-        if(player && playerForm.team.name) delete playerForm.team;
-        const formData: any = new FormData();
+        if(player && playerForm.team && playerForm.team.name) delete playerForm.team;
         for (let key in playerForm) formData.append(key, playerForm[key]);
 
-        const response = await fetch(player ? `http://localhost:8000/api/players/${player.id}/` : 
+        const response = await fetch(player ? `http://localhost:8000/api/players/${player.id}/` :
             "http://localhost:8000/api/players/", {
             method: player ? "PUT" : "POST",
             body: formData,
         });
         try {
-            const data = await response.json();
+            const playeResp = await response.json();
+            navigate(`/jugadores/${playeResp.id}`)
         } catch (error) {
             console.log(error);
         }
@@ -85,22 +106,19 @@ export default function PlayerForm({ player, teams }: Props) {
                 onChange={handleChange}
                 required
             />
-            <FormControl className={classes.formControl}>
-                <InputLabel id="team-select-label">Equipo</InputLabel>
-                <Select
-                    labelId="team-select-label"
-                    id="team-select"
-                    name="team"
-                    value={playerForm?.team?.id}
-                    onChange={handleSelect}
-                >
-                    {teams.map((team) => (
-                        <MenuItem key={team.id} value={team.id}>
-                            {team.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <TextField
+                select
+                id="team-select"
+                name="team"
+                value={playerForm?.team?.id}
+                onChange={handleTeamSelect}
+            >
+                {teams.map((team) => (
+                    <MenuItem key={team.id} value={team.id}>
+                        {team.name}
+                    </MenuItem>
+                ))}
+            </TextField>
             <TextField
                 label="Número de camiseta"
                 type="number"
@@ -140,26 +158,31 @@ export default function PlayerForm({ player, teams }: Props) {
                 required
             />
             <TextField
+            select
                 label="Pie dominante"
                 name="foot"
-                value={playerForm?.foot}
-                onChange={handleChange}
+                value={selectedFoot}
+                onChange={handleFootSelect}
                 required
-            />
+            >
+                <MenuItem value="right">Derecho</MenuItem>
+                <MenuItem value="left">Izquierdo</MenuItem>
+                <MenuItem value="both">Ambos</MenuItem>
+            </TextField>
             <div>
-            <Button  variant="contained" component="label">
-                Foto
-                <input 
-                    hidden 
-                    accept="image/*" 
-                    type="file"
-                    name="picture"
-                    onChange={handlePicture}
-                />
-            </Button>
-            <Button  type="submit" variant="contained" color="primary">
-                Guardar
-            </Button>
+                <Button variant="contained" component="label">
+                    Foto
+                    <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        name="picture"
+                        onChange={handlePicture}
+                    />
+                </Button>
+                <Button type="submit" variant="contained" color="primary">
+                    Guardar
+                </Button>
             </div>
         </form>
     );
