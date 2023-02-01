@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Player, PlayerPayload, Team } from "../../types";
 import { Typography } from "@mui/material";
-import PlayerForm from "../../components/shared/player-form";
+import PlayerForm from "../../components/players/player-form";
 
 const AddEditPlayer: React.FC = () => {
     const [player, setPlayer] = useState<Player | null>(null);

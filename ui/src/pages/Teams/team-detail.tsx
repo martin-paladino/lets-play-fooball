@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Typography, Card, CardContent, CardMedia, Theme } from '@mui/material';
+import { Typography, Card, CardContent, CardMedia, Theme, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Team } from '../../types';
 
 const useStyles: any = makeStyles((theme: Theme) => ({
@@ -24,6 +24,7 @@ const useStyles: any = makeStyles((theme: Theme) => ({
 const TeamDetails: React.FC = () => {
     const [team, setTeam] = React.useState<Team>();
     const classes = useStyles();
+    const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
@@ -31,6 +32,7 @@ const TeamDetails: React.FC = () => {
             const response = await fetch(`http://localhost:8000/api/teams/${id}/`);
             try {
                 const data = await response.json();
+                localStorage.setItem("team", JSON.stringify(data));
                 setTeam(data);
             } catch (error) {
                 console.log(error);
@@ -38,6 +40,17 @@ const TeamDetails: React.FC = () => {
         };
         getTeam();
     }, []);
+
+    const handleDeleteTeam = async () => {
+        await fetch(`http://localhost:8000/api/teams/${id}/`, {
+            method: "DELETE",
+        });
+        try {
+            navigate("/equipos");
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Card className={classes.root}>
@@ -60,6 +73,10 @@ const TeamDetails: React.FC = () => {
                     <Typography variant="subtitle2" color="textSecondary">
                         Edad promedio: {team?.average_age || "-"} 
                     </Typography>
+                    <Link to={`/equipos/${id}/editar`} style={{ textDecoration: "none" }}>
+                        <Button>Editar</Button>
+                    </Link>
+                    <Button onClick={handleDeleteTeam}>Eliminar</Button>
                 </CardContent>
             </div>
         </Card>

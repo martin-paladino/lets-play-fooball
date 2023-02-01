@@ -5,7 +5,6 @@ import { Player, PlayerPayload, Team } from "../../types";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         "& .MuiTextField-root": {
@@ -23,12 +22,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-type Props = {
+interface PlayerFormProps {
     player: Player | null;
     teams: Team[];
 };
 
-export default function PlayerForm({ player, teams }: Props) {
+export default function PlayerForm({ player, teams }: PlayerFormProps) {
     const [playerForm, setPlayerForm] = useState<any>();
     const [selectedFoot, setSelectedFoot] = useState("");
     const navigate = useNavigate();
@@ -63,8 +62,8 @@ export default function PlayerForm({ player, teams }: Props) {
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        const formData = new FormData();
         event.preventDefault();
+        const formData = new FormData();
         setPlayerForm({
             name: "",
             team: "",
