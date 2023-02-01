@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Typography, Card, CardContent, CardMedia, Theme, Button } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Typography, Card, CardContent, CardMedia, Theme, Button, } from '@mui/material';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Player } from '../../types';
 
@@ -24,6 +24,7 @@ const useStyles: any = makeStyles((theme: Theme) => ({
 const PlayerDetails: React.FC = () => {
     const [player, setPlayer] = React.useState<Player>();
     const classes = useStyles();
+    const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
@@ -39,6 +40,17 @@ const PlayerDetails: React.FC = () => {
         };
         getPlayer();
     }, []);
+
+    const handleDeleteUser = async () => {
+        await fetch(`http://localhost:8000/api/players/${id}/`, {
+            method: "DELETE",
+        });
+        try {
+            navigate("/jugadores");
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Card className={classes.root}>
@@ -77,8 +89,9 @@ const PlayerDetails: React.FC = () => {
                         Pie hábil: {player?.foot}
                     </Typography>
                     <Link to={`/jugadores/${id}/editar`} style={{ textDecoration: "none" }}>
-                    <Button>Editar</Button>
+                        <Button>Editar</Button>
                     </Link>
+                    <Button onClick={handleDeleteUser}>Eliminar</Button>
                 </CardContent>
             </div>
         </Card>
