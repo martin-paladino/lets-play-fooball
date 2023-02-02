@@ -18,7 +18,7 @@ Instrucciones de instalación:
 5. Configura las variables de entorno en api/lets_play_football/settings.py para conectarse a la base de datos de PostgreSQL.
 
 Instrucciones para correr la aplicación:
-1. Activa el entorno virtual con el siguiente comando:
+1. Activa el entorno virtual con el siguiente comando(en linux):
     source nombre_del_entorno/bin/activate
     Por ejemplo: source venv/bin/activate
 2. Inicia el servidor de Django con el siguiente comando:
