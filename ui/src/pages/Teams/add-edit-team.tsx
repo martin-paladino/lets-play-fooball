@@ -13,7 +13,6 @@ const AddEditTeam: React.FC = () => {
 
     return (
         <>
-            <Typography variant="h4">{team ? "Editar" : "Agregar"} Equipo</Typography>
             <TeamForm team={team} />
         </>
     );

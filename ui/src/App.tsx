@@ -11,10 +11,12 @@ import TeamDetail from './pages/Teams/team-detail';
 import PlayerDetail from './pages/Players/player-detail';
 import AddEditPlayer from './pages/Players/add-edit-player';
 import AddEditTeam from './pages/Teams/add-edit-team';
+import Navbar from './components/shared/navbar';
 
 const App: React.FC = () => {
   return (
-    <>
+    <div>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/equipos" element={<Teams />} />
@@ -26,7 +28,7 @@ const App: React.FC = () => {
         <Route path="/equipos/nuevo" element={<AddEditTeam />} />
         <Route path="/jugadores/nuevo" element={<AddEditPlayer />} />
       </Routes>
-      </>
+      </div>
   );
 }
 

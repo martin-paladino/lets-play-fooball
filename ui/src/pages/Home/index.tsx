@@ -6,11 +6,6 @@ const Home: React.FC = () => {
     return (
         <Box sx={{ flexGrow: 1, height: '100vh' }}>
             <Grid container spacing={2}>
-                <Grid item xs={12} sx={{ textAlign: 'center' }}>
-                    <Typography sx={{ p: 5 }}>Lets play football!</Typography>
-                </Grid>
-            </Grid>
-            <Grid container spacing={2}>
                 <Grid item xs={12} sx={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>
                     <Link to="/jugadores" style={{ textDecoration: "none" }}>
                         <Button variant="contained">

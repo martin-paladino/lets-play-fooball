@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Card, CardContent, CardMedia, Theme, Button, } from '@mui/material';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
@@ -22,12 +22,27 @@ const useStyles: any = makeStyles((theme: Theme) => ({
 }));
 
 const PlayerDetails: React.FC = () => {
-    const [player, setPlayer] = React.useState<Player>();
+    const [player, setPlayer] = useState<Player>();
     const classes = useStyles();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [foot, setFoot] = useState<string>("")
 
     useEffect(() => {
+        switch (player?.foot) {
+            case "left":
+                setFoot("Izquierdo");
+                break;
+            case "right":
+                setFoot("Derecho");
+                break;
+            case "both":
+                setFoot("Ambos");
+                break;
+            default:
+                setFoot("");
+        }
+
         const getPlayer = async () => {
             const response = await fetch(`http://localhost:8000/api/players/${id}/`);
             try {
@@ -56,7 +71,7 @@ const PlayerDetails: React.FC = () => {
         <Card className={classes.root}>
             <CardMedia
                 className={classes.cover}
-                image={player?.picture}
+                image={player?.picture || `${process.env.PUBLIC_URL}/images/no-picture.png`}
                 title={player?.name}
             />
             <div className={classes.details}>
@@ -86,7 +101,7 @@ const PlayerDetails: React.FC = () => {
                         Edad: {player?.age} años
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">
-                        Pie hábil: {player?.foot}
+                        Pie hábil: {foot}
                     </Typography>
                     <Link to={`/jugadores/${id}/editar`} style={{ textDecoration: "none" }}>
                         <Button>Editar</Button>

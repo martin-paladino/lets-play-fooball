@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import CardsList from "../../components/shared/cards-list";
 import { Team } from "../../types";
-import { Typography, Button } from "@mui/material";
-import { Link } from 'react-router-dom';
 
 const Teams: React.FC = () => {
     const [teams, setTeams] = useState<Team[]>([]);
@@ -22,12 +20,6 @@ const Teams: React.FC = () => {
 
     return (
        <>
-        <Typography variant="h4">Equipos</Typography>
-        <Link to="/equipos/nuevo" style={{ textDecoration: "none" }}>
-                <Button variant="contained">
-                    Agregar
-                </Button>
-            </Link>
         <CardsList list={teams} />
        </>
     );

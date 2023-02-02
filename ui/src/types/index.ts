@@ -5,6 +5,7 @@ export type Team = {
     number_of_players?: number;
     average_age?: number;
     country: string;
+    players?: Player[];
 }
 
 export type Player = {

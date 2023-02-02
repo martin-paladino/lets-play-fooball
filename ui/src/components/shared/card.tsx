@@ -14,7 +14,7 @@ const Card: React.FC<CardProps> = ({ elem }) => {
             <CardMedia
                 component="img"
                 sx={{ width: 151 }}
-                image={("team_shield" in elem) ? elem.team_shield : elem.picture}
+                image={(("team_shield" in elem) ? elem.team_shield : elem.picture) || `${process.env.PUBLIC_URL}/images/no-picture.png`}
                 alt={("team_shield" in elem) ? "Escudo del equipo" : "Foto del jugador"}
                 onClick={() => navigate(("team_shield" in elem) ? `/equipos/${elem.id}` : `/jugadores/${elem.id}`)}
             />

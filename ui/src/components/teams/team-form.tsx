@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from '@mui/styles';
-import { TextField, Button, MenuItem, Theme } from "@mui/material"
+import { TextField, Button, MenuItem, Theme, FormControl, Typography } from "@mui/material"
 import { Player, PlayerPayload, Team } from "../../types";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        "& .MuiTextField-root": {
-            margin: theme.spacing(1),
-            width: "25ch",
-        },
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        width: "25ch",
-    },
-    button: {
-        display: "block !important",
+    buttons: {
+        display: "flex",
         margin: theme.spacing(2),
+        justifyContent: "space-around"
+    },
+    form: {
+        display: "flex",
+        justifyContent: "center",
+        margin: 20,
+        padding: 20
     }
 }));
 
@@ -28,6 +25,7 @@ interface TeamFormProps {
 
 const TeamForm: React.FC<TeamFormProps> = ({ team }) => {
     const [teamForm, setTeamForm] = useState<any>();
+    const [pictureName, setPictureName] = useState<string>("");
     const navigate = useNavigate();
     const location = useLocation();
     const classes = useStyles();
@@ -44,7 +42,10 @@ const TeamForm: React.FC<TeamFormProps> = ({ team }) => {
     };
 
     const handlePicture = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) setTeamForm({ ...teamForm, team_shield: event.target.files[0] });
+        if (event.target.files) {
+            setTeamForm({ ...teamForm, team_shield: event.target.files[0] });
+            setPictureName(event.target.files[0].name);
+        };
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -69,22 +70,29 @@ const TeamForm: React.FC<TeamFormProps> = ({ team }) => {
     };
 
     return (
-        <form className={classes.root} onSubmit={handleSubmit}>
+        <div className={classes.form}>
+        <form onSubmit={handleSubmit}>
+        <FormControl margin="normal" fullWidth>
             <TextField
                 label="Nombre"
                 name="name"
+                InputLabelProps={{ shrink: true }}
                 value={teamForm?.name}
                 onChange={handleChange}
                 required
             />
+            </FormControl>
+            <FormControl margin="normal" fullWidth>
             <TextField
                 label="País"
                 name="country"
+                InputLabelProps={{ shrink: true }}
                 value={teamForm?.country}
                 onChange={handleChange}
                 required
             />
-            <div>
+            </FormControl>
+            <div className={classes.buttons}>
                 <Button variant="contained" component="label">
                     Foto
                     <input
@@ -99,7 +107,9 @@ const TeamForm: React.FC<TeamFormProps> = ({ team }) => {
                     Guardar
                 </Button>
             </div>
+            {pictureName && <Typography variant="subtitle2" style={{ color: "blue" }}>{pictureName}</Typography>}
         </form>
+        </div>
     )
 };
 
