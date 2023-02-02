@@ -29,6 +29,20 @@ const PlayerDetails: React.FC = () => {
     const [foot, setFoot] = useState<string>("")
 
     useEffect(() => {
+        const getPlayer = async () => {
+            const response = await fetch(`http://localhost:8000/api/players/${id}/`);
+            try {
+                const data = await response.json();
+                localStorage.setItem("player", JSON.stringify(data));
+                setPlayer(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getPlayer();
+    }, []);
+
+    useEffect(() => {
         switch (player?.foot) {
             case "left":
                 setFoot("Izquierdo");
@@ -42,19 +56,7 @@ const PlayerDetails: React.FC = () => {
             default:
                 setFoot("");
         }
-
-        const getPlayer = async () => {
-            const response = await fetch(`http://localhost:8000/api/players/${id}/`);
-            try {
-                const data = await response.json();
-                localStorage.setItem("player", JSON.stringify(data));
-                setPlayer(data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getPlayer();
-    }, []);
+    }, [player])
 
     const handleDeleteUser = async () => {
         await fetch(`http://localhost:8000/api/players/${id}/`, {

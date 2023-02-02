@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
     },
     button: {
+        display: 'flex',
         width: '50%',
         height: '100px',
         margin: '20px 0',
@@ -23,7 +24,7 @@ const Home: React.FC = () => {
 
     return (
         <Box className={classes.root}>
-            <Grid container spacing={10}>
+            <Grid container spacing={10} marginTop={12}>
                 <Grid item xs={12}>
                     <Link to="/jugadores" style={{ textDecoration: "none" }}>
                         <Button variant="contained" className={classes.button}>

@@ -22,9 +22,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface PlayerFormProps {
     player: Player | null;
     teams: Team[];
+    teamId?: number;
 };
 
-export default function PlayerForm({ player, teams }: PlayerFormProps) {
+export default function PlayerForm({ player, teams, teamId }: PlayerFormProps) {
     const [playerForm, setPlayerForm] = useState<any>();
     const [selectedFoot, setSelectedFoot] = useState("");
     const [pictureName, setPictureName] = useState<string>("");
@@ -101,6 +102,7 @@ export default function PlayerForm({ player, teams }: PlayerFormProps) {
 
     return (
         <div className={classes.form}>
+            {playerForm && 
             <form onSubmit={handleSubmit}>
                 <FormControl margin="normal" fullWidth>
                     <TextField
@@ -220,7 +222,7 @@ export default function PlayerForm({ player, teams }: PlayerFormProps) {
                     </Button>
                 </div>
                     {pictureName && <Typography variant="subtitle2" style={{ color: "blue" }}>{pictureName}</Typography>}
-            </form>
+            </form>}
         </div>
     );
 }
