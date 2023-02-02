@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from '@mui/styles';
 import { TextField, Button, MenuItem, Theme, FormControl, Typography } from "@mui/material"
 import { Player, PlayerPayload, Team } from "../../types";
-import { SelectChangeEvent } from "@mui/material/Select";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({

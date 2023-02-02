@@ -1,19 +1,39 @@
-import React from 'react';
 import { Typography, Button, Grid, Box } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        height: '100%',
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+    },
+    button: {
+        width: '50%',
+        height: '100px',
+        margin: '20px 0',
+    },
+}));
+
 const Home: React.FC = () => {
+    const classes = useStyles();
+
     return (
-        <Box sx={{ flexGrow: 1, height: '100vh' }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} sx={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>
+        <Box className={classes.root}>
+            <Grid container spacing={10}>
+                <Grid item xs={12}>
                     <Link to="/jugadores" style={{ textDecoration: "none" }}>
-                        <Button variant="contained">
+                        <Button variant="contained" className={classes.button}>
                             Jugadores
                         </Button>
                     </Link>
+                </Grid>
+                <Grid item xs={12}>
                     <Link to="/equipos" style={{ textDecoration: "none" }}>
-                        <Button variant="contained">
+                        <Button variant="contained" className={classes.button}>
                             Equipos
                         </Button>
                     </Link>
